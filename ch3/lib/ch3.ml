@@ -60,12 +60,58 @@ let any_zeros lst = List.exists (fun x -> x = 0) lst
 (* returns: the last element of [lst]
  * requires: [lst] is nonempty
  *)
-let last_element lst =
-  List.nth lst (List.length lst - 1)
-
-let last_element' lst =
-  lst |> List.rev |> List.hd
+let last_element lst = List.nth lst (List.length lst - 1)
+let last_element' lst = lst |> List.rev |> List.hd
 
 (* returns: whether [lst] contains any zeros *)
-let any_zeros lst =
-  List.exists (fun x -> x = 0) lst
+let any_zeros lst = List.exists (fun x -> x = 0) lst
+
+(********************************************************************
+ * exercise: take drop
+ ********************************************************************)
+
+(* returns: [take n lst] is the first [n] elements of [lst], or just [lst] if
+ * [lst] has fewer than [n] elements. *)
+let rec take n lst =
+  if n = 0 then []
+  else match lst with [] -> [] | x :: xs -> x :: take (n - 1) xs
+
+(* returns: [drop n lst] is all but the first [n] elements of [lst], or just
+ *  [[]] if [lst] has fewer than [n] elements.
+ * requires: [n >= 0]
+ *)
+
+let rec drop n lst =
+  if n = 0 then lst else match lst with [] -> [] | _ :: xs -> drop (n - 1) xs
+
+(********************************************************************
+ * exercise: take drop tail
+ ********************************************************************)
+
+(* returns: [take_rev n xs acc] is [lst1 @ acc], where [lst] is
+   *   the first [n] elements of [xs] (or just [xs] if [xs] has
+   *   fewer than [n] elements) in reverse order.
+   * requires: [n >= 0] *)
+let rec take_rev n xs acc =
+  if n = 0 then acc
+  else match xs with [] -> acc | x :: xs' -> take_rev (n - 1) xs' (x :: acc)
+
+(* returns:  [take n lst] is the first [n] elements of [lst], or
+ *   just [lst] if [lst] has fewer than [n] elements.
+ * requires: [n >= 0]
+ *)
+let take_tr n lst = take_rev n lst [] |> List.rev
+
+(* the "natural" solution to [drop] above is already tail recursive *)
+let drop_tr = drop
+
+(* returns:  [from i j l] is the list containing the integers from
+ *   [i] to [j], inclusive, followed by the list [l].
+ * example:  [from 1 3 [0] = [1;2;3;0]] *)
+let rec from i j l = if i > j then l else from i (j - 1) (j :: l)
+
+(* returns:  [i -- j] is the list containing the integers from
+ *   [i] to [j], inclusive.
+ *)
+let ( -- ) i j = from i j []
+let longlist = 0 -- 1_000_000
