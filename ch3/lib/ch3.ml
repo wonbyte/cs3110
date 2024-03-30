@@ -52,3 +52,20 @@ let last_element lst = lst |> List.rev |> List.hd
 
 (* returns: whether [lst] contains any zeros *)
 let any_zeros lst = List.exists (fun x -> x = 0) lst
+
+(********************************************************************
+ * exercise: library puzzle
+ ********************************************************************)
+
+(* returns: the last element of [lst]
+ * requires: [lst] is nonempty
+ *)
+let last_element lst =
+  List.nth lst (List.length lst - 1)
+
+let last_element' lst =
+  lst |> List.rev |> List.hd
+
+(* returns: whether [lst] contains any zeros *)
+let any_zeros lst =
+  List.exists (fun x -> x = 0) lst
